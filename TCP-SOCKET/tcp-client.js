@@ -34,7 +34,6 @@ function startClient() {
     });
 }
 
-// enviar mensajes desde consola
 rl.on('line', (input) => {
     if (client) {
         client.write(input);

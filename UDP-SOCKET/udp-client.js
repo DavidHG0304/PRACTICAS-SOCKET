@@ -3,7 +3,6 @@ const readline = require('readline');
 
 const client = dgram.createSocket('udp4');
 
-// 🔥 CAMBIA esta IP por la de tu compañero (Hamachi o red local)
 const SERVER_IP = '192.168.1.90';
 const PORT = 4000;
 

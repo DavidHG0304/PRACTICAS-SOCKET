@@ -13,7 +13,6 @@ const server = net.createServer((socket) => {
         const message = data.toString().trim();
         console.log('Mensaje:', message);
 
-        // reenviar a todos los clientes
         clients.forEach(client => {
             if (client !== socket) {
                 client.write(message + '\n');
@@ -24,7 +23,6 @@ const server = net.createServer((socket) => {
     socket.on('end', () => {
         console.log('Cliente desconectado');
 
-        // eliminar cliente del array
         const index = clients.indexOf(socket);
         if (index !== -1) {
             clients.splice(index, 1);
