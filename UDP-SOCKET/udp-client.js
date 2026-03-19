@@ -1,14 +1,29 @@
 const dgram = require('dgram');
+const readline = require('readline');
+
 const client = dgram.createSocket('udp4');
 
-const mensaje = Buffer.from('Hola servidor UDP');
+// 🔥 CAMBIA esta IP por la de tu compañero (Hamachi o red local)
+const SERVER_IP = '192.168.1.90';
+const PORT = 4000;
 
-client.send(mensaje, 12345, '25.xxx.xxx.xxx', (err) => {
-    if (err) console.error(err);
-    else console.log('Mensaje enviado');
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+console.log("Escribe mensajes (UDP):");
+
+rl.on('line', (input) => {
+    const mensaje = Buffer.from(input);
+    client.send(mensaje, PORT, SERVER_IP);
 });
 
 client.on('message', (msg) => {
-    console.log('Respuesta:', msg.toString());
+    console.log('Respuesta del servidor:', msg.toString());
+});
+
+client.on('error', (err) => {
+    console.error('Error del cliente:', err.message);
     client.close();
 });

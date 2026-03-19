@@ -10,22 +10,32 @@ const server = net.createServer((socket) => {
     socket.write('Bienvenido al chat TCP\n');
 
     socket.on('data', (data) => {
-        const message = data.toString();
+        const message = data.toString().trim();
         console.log('Mensaje:', message);
 
-        // reenviar a todos
+        // reenviar a todos los clientes
         clients.forEach(client => {
             if (client !== socket) {
-                client.write(message);
+                client.write(message + '\n');
             }
         });
     });
 
     socket.on('end', () => {
         console.log('Cliente desconectado');
+
+        // eliminar cliente del array
+        const index = clients.indexOf(socket);
+        if (index !== -1) {
+            clients.splice(index, 1);
+        }
+    });
+
+    socket.on('error', (err) => {
+        console.log('Error:', err.message);
     });
 });
 
-server.listen(12345, '0.0.0.0', () => {
-    console.log('Servidor escuchando en puerto 12345');
+server.listen(4000, '0.0.0.0', () => {
+    console.log('Servidor TCP escuchando en puerto 12345');
 });
