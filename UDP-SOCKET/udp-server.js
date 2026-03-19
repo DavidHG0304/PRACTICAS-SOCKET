@@ -3,11 +3,20 @@ const server = dgram.createSocket('udp4');
 
 const PORT = 4000;
 
+let mensajesPorSegundo = 0;
+
+const LIMITE = 5;
+
+setInterval(() => {
+    mensajesPorSegundo = 0;
+}, 1000);
+
 server.on('message', (msg, rinfo) => {
     const mensaje = msg.toString();
+    mensajesPorSegundo++;
 
-    if (Math.random() < 0.3) {
-        console.log(`Mensaje perdido de ${rinfo.address}:${rinfo.port}`);
+    if (mensajesPorSegundo > LIMITE) {
+        console.log(`Mensaje perdido por congestión de ${rinfo.address}:${rinfo.port}`);
         return;
     }
 
